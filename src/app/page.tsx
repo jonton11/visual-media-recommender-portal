@@ -5,7 +5,27 @@ import { Loader2 } from "lucide-react"
 
 interface Recommendation {
   title: string
+  description: string
+  matchPercentage: number
 }
+
+const MOCK_RECOMMENDATIONS: Recommendation[] = [
+  {
+    title: "Breaking Bad",
+    description: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student to secure his family's financial future.",
+    matchPercentage: 98,
+  },
+  {
+    title: "Better Call Saul",
+    description: "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.",
+    matchPercentage: 95,
+  },
+  {
+    title: "The Wire",
+    description: "A complex, multi-layered examination of the city of Baltimore through the lens of law enforcement, politics, education, and the criminal world.",
+    matchPercentage: 92,
+  },
+]
 
 export default function Home() {
   const [input, setInput] = useState("")
@@ -15,7 +35,11 @@ export default function Home() {
   const handleGetRecommendations = async () => {
     if (!input.trim()) return
     setIsLoading(true)
-    // TODO: Add recommendation logic
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setRecommendations(MOCK_RECOMMENDATIONS)
+
     setIsLoading(false)
   }
 
@@ -41,6 +65,27 @@ export default function Home() {
         {isLoading && (
           <div className="flex justify-center py-8">
             <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
+        )}
+
+        {!isLoading && recommendations.length > 0 && (
+          <div className="space-y-4 pt-8">
+            {recommendations.map((rec) => (
+              <div
+                key={rec.title}
+                className="rounded-lg border bg-card p-4 shadow-sm"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{rec.title}</h3>
+                  <span className="text-sm text-muted-foreground">
+                    {rec.matchPercentage}% Match
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {rec.description}
+                </p>
+              </div>
+            ))}
           </div>
         )}
       </div>
