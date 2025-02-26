@@ -1,3 +1,6 @@
+# visual-media-recommender-portal
+Streaming services are scaling back to the cable product and the number of subscriptions is out of hand. This portal serves as a log of shows watched and adds recommendations of what to check out next.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
