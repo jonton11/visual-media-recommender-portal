@@ -24,9 +24,9 @@ export default function RootLayout({
             <div className="absolute right-4 top-4">
               <ThemeToggle />
             </div>
-            <main>
+            <div className="flex min-h-screen">
               {children}
-            </main>
+            </div>
           </div>
         </ThemeProvider>
       </body>
