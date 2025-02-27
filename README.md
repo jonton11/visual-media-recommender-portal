@@ -1,39 +1,61 @@
-# visual-media-recommender-portal
-Streaming services are scaling back to the cable product and the number of subscriptions is out of hand. This portal serves as a log of shows watched and adds recommendations of what to check out next.
+# Visual Media Recommender Portal
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A modern web application that helps you track your watched shows and discover new content through AI-powered recommendations. Built to address the growing complexity of managing multiple streaming service subscriptions.
+
+## Features
+
+- 📺 Track shows and movies you've watched
+- 🤖 Get AI-powered recommendations based on your viewing history
+- 🌙 Dark mode support
+- 📱 Responsive design
+- 💾 Local storage persistence
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **AI Integration**: OpenAI GPT-4
+- **Form Validation**: Zod
+- **Theme Management**: next-themes
+
+## Project Structure
+
+```
+src/
+├── app/                   # Next.js app router files
+│   ├── api/              # API routes
+│   └── page.tsx          # Main application page
+├── components/           # React components
+│   ├── ui/              # Reusable UI components
+│   └── sidebar.tsx      # Watch history sidebar
+└── lib/                 # Utility functions
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Copy `.env.example` to `.env` and add your OpenAI API key
+3. Install dependencies:
+   ```bash
+   bun install
+   ```
+4. Start the development server:
+   ```bash
+   bun dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Environment Variables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `OPENAI_API_KEY`: Your OpenAI API key for recommendation generation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project uses:
+- TypeScript for type safety
+- Tailwind CSS for styling
+- shadcn/ui for UI components
+- Zod for input validation
+- next-themes for dark mode support
