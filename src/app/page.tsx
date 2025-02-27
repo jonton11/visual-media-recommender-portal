@@ -16,38 +16,23 @@ interface WatchHistoryEntry {
   recommendations: Recommendation[]
 }
 
-const MOCK_RECOMMENDATIONS: Recommendation[] = [
-  {
-    title: "Breaking Bad",
-    description: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student to secure his family's financial future.",
-    matchPercentage: 98,
-  },
-  {
-    title: "Better Call Saul",
-    description: "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.",
-    matchPercentage: 95,
-  },
-  {
-    title: "The Wire",
-    description: "A complex, multi-layered examination of the city of Baltimore through the lens of law enforcement, politics, education, and the criminal world.",
-    matchPercentage: 92,
-  },
-  {
-    title: "True Detective",
-    description: "Seasonal anthology series in which police investigations unearth the personal and professional secrets of those involved, both within and outside the law.",
-    matchPercentage: 89,
-  },
-  {
-    title: "The Sopranos",
-    description: "New Jersey mob boss Tony Soprano deals with personal and professional issues in his home and business life that affect his mental state.",
-    matchPercentage: 87,
-  },
-  {
-    title: "Fargo",
-    description: "Various chronicles of deception, intrigue and murder in and around frozen Minnesota. Yet all of these tales mysteriously lead back one way or another to Fargo, North Dakota.",
-    matchPercentage: 85,
+const getRecommendations = async (title: string): Promise<Recommendation[]> => {
+  const response = await fetch('/api/recommendations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error || 'Failed to fetch recommendations')
   }
-]
+
+  const data = await response.json()
+  return data.recommendations
+}
 
 export default function Home() {
   const [input, setInput] = useState("")
@@ -64,46 +49,34 @@ export default function Home() {
     }
   }, [])
 
-  const getRandomRecommendations = () => {
-    // Create a copy of the recommendations array
-    const shuffled = [...MOCK_RECOMMENDATIONS]
-    // Get random number between 2 and 4 for number of recommendations
-    const numRecommendations = Math.floor(Math.random() * 3) + 2
-    
-    // Shuffle array
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-    
-    // Return first 2-4 items
-    return shuffled.slice(0, numRecommendations)
-  }
-
   const handleGetRecommendations = async () => {
     if (!input.trim()) return
     setIsLoading(true)
+    setRecommendations([]) // Clear previous recommendations
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    const randomRecommendations = getRandomRecommendations()
-    
-    // Create new history entry
-    const newEntry: WatchHistoryEntry = {
-      title: input,
-      timestamp: Date.now(),
-      recommendations: randomRecommendations
+    try {
+      const recommendations = await getRecommendations(input)
+      
+      // Create new history entry
+      const newEntry: WatchHistoryEntry = {
+        title: input,
+        timestamp: Date.now(),
+        recommendations
+      }
+
+      // Update watch history
+      const updatedHistory = [newEntry, ...watchHistory]
+      setWatchHistory(updatedHistory)
+      localStorage.setItem("watchHistory", JSON.stringify(updatedHistory))
+
+      setRecommendations(recommendations)
+      setInput("")
+    } catch (error) {
+      console.error('Failed to get recommendations:', error)
+      // TODO: Add error state UI
+    } finally {
+      setIsLoading(false)
     }
-
-    // Update watch history
-    const updatedHistory = [newEntry, ...watchHistory]
-    setWatchHistory(updatedHistory)
-    localStorage.setItem("watchHistory", JSON.stringify(updatedHistory))
-
-    setRecommendations(randomRecommendations)
-    setIsLoading(false)
-    setInput("")
   }
 
   const handleHistoryEntryClick = (entry: WatchHistoryEntry) => {
